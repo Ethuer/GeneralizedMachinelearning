@@ -135,18 +135,18 @@ class Classical_ML_benchmark():
             (Lasso(alpha=self.alpha, max_iter=self.max_iter, tol = self.tol),"Lasso"),  # regressor
             
             
-            # 
-            #(RandomForestClassifier(n_estimators=self.n_estimators_ET_RF,max_features='sqrt' ,
-            #                        bootstrap=self.bootstrap, oob_score=False), "Randomforest_sqrt"),
+            # Rf
+            (RandomForestClassifier(n_estimators=self.n_estimators_ET_RF,max_features='sqrt' ,
+                                    bootstrap=self.bootstrap, oob_score=False), "Randomforest_sqrt"),
             
-            #(RandomForestClassifier(n_estimators=self.n_estimators_ET_RF,max_features='log2', 
-            #                        bootstrap=self.bootstrap, oob_score=False), "Randomforest_log2"),
+            (RandomForestClassifier(n_estimators=self.n_estimators_ET_RF,max_features='log2', 
+                                    bootstrap=self.bootstrap, oob_score=False), "Randomforest_log2"),
             
             
             (RandomForestClassifier(n_estimators=self.n_estimators_ET_RF,max_features=None,
                                     bootstrap=self.bootstrap, oob_score=False), "Randomforest"),
             
-            
+            (BaggingClassifier(n_estimators=self.n_estimators_ET_RF, oob_score=False), "Bagging Tree Classifier"),
             
             # boosted trees
             (GradientBoostingClassifier(n_estimators= self.n_estimators_GB,
@@ -243,7 +243,7 @@ class Classical_ML_benchmark():
         y_true = self.data.ohot_encoder.transform(y_true.reshape(-1, 1))
         y_pred = self.data.ohot_encoder.transform(y_pred.reshape(-1, 1))
         
-        return np.mean([roc_auc_score(y_true= np.transpose(y_true)[count],y_score=col ) 
+        return np.mean([accuracy_score(y_true= np.transpose(y_true)[count],y_pred=col ) 
                         for count,col in enumerate(np.transpose(y_pred)) ])
 
     
